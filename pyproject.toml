@@ -1,0 +1,33 @@
+[project]
+name = "flask-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flask",
+    "flask-sqlalchemy",
+    "flask-migrate",
+    "flask-wtf",
+    "hatchling"
+]
+
+[tool.hatch.envs.default.scripts]
+run = "flask --app run:app run --debug"
+init_db = "flask --app run:app db init"
+migrate = "flask --app run:app db migrate"
+upgrade = "flask --app run:app db upgrade"
+shell = "flask --app run:app shell"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/app",
+    "/config.py",
+    "/run.py",
+]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

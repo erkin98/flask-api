@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Brands{% endblock %}
+
+{% block content %}
+    <h1>Brands</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Internal ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for brand in brands %}
+                <tr>
+                    <td><img src="{{ brand.logo }}" alt="{{ brand.name }} logo" width="50"></td>
+                    <td>{{ brand.name }}</td>
+                    <td>{{ brand.description }}</td>
+                    <td>{{ brand.internal_id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">
+        Add Brand
+    </button>
+
+    <div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBrandModalLabel">Add Brand</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.logo.label }}
+                            {{ form.logo(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.name.label }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.description.label }}
+                            {{ form.description(class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.internal_id.label }}
+                            {{ form.internal_id(class="form-control") }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Brand</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
