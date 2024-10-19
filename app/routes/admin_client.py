@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from werkzeug import Response
 from app.forms.brand_form import BrandForm
 from app.forms.manufacturer_form import ManufacturerForm
 from app.controllers import brand_controller, manufacturer_controller
@@ -6,7 +7,7 @@ from app.controllers import brand_controller, manufacturer_controller
 bp = Blueprint('admin', __name__, url_prefix='/client')
 
 @bp.route('/brands', methods=['GET', 'POST'])
-def brands():
+def brands() -> Response | str:
     form = BrandForm()
     if form.validate_on_submit():
         brand_data = {
@@ -22,7 +23,7 @@ def brands():
     return render_template('brands.html', brands=brands, form=form)
 
 @bp.route('/manufacturers', methods=['GET', 'POST'])
-def manufacturers():
+def manufacturers() -> Response | str:
     form = ManufacturerForm()
     if form.validate_on_submit():
         manufacturer_data = {
