@@ -1,6 +1,9 @@
 from typing import Any
+
 from app.extensions import db
+
 from .brand import brands_manufacturers
+
 
 class Manufacturer(db.Model):
     id = db.Column(db.Integer, primary_key=True)

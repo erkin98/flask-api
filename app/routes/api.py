@@ -1,4 +1,5 @@
 from typing import Literal
+
 from flask import Blueprint, Response, jsonify
 
 from app.services import brand_service, manufacturer_service

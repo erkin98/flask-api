@@ -1,4 +1,5 @@
 from typing import Any
+
 from app.extensions import db
 
 brands_manufacturers = db.Table('brands_manufacturers',

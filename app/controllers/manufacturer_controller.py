@@ -1,18 +1,26 @@
 from __future__ import annotations
 
-from typing import Optional
-
-from app.extensions import db
 from app.models.manufacturer import Manufacturer
+from app.services import manufacturer_service
+from app.services.errors import NotFoundError
+
 
 def get_all_manufacturers() -> list[Manufacturer]:
-    return list(Manufacturer.query.all())
+    return manufacturer_service.list_manufacturers()
 
-def get_manufacturer_by_id(manufacturer_id: int) -> Optional[Manufacturer]:
-    return db.session.get(Manufacturer, manufacturer_id)
+def get_manufacturer_by_id(manufacturer_id: int) -> Manufacturer | None:
+    try:
+        return manufacturer_service.get_manufacturer(manufacturer_id)
+    except NotFoundError:
+        return None
 
 def create_manufacturer(data: dict) -> Manufacturer:
-    manufacturer = Manufacturer(**data)
-    db.session.add(manufacturer)
-    db.session.commit()
-    return manufacturer
+    return manufacturer_service.create_manufacturer(
+        manufacturer_service.ManufacturerCreate(
+            name=data['name'],
+            description=data.get('description'),
+            country=data.get('country'),
+            certificates=data.get('certificates'),
+            internal_id=data['internal_id'],
+        )
+    )

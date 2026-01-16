@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
@@ -14,9 +13,9 @@ from app.services.errors import ConflictError, NotFoundError, ValidationError
 class ManufacturerCreate:
     name: str
     internal_id: str
-    description: Optional[str] = None
-    country: Optional[str] = None
-    certificates: Optional[str] = None
+    description: str | None = None
+    country: str | None = None
+    certificates: str | None = None
 
 
 def list_manufacturers() -> list[Manufacturer]:

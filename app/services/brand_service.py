@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
@@ -14,8 +13,8 @@ from app.services.errors import ConflictError, NotFoundError, ValidationError
 class BrandCreate:
     name: str
     internal_id: str
-    logo: Optional[str] = None
-    description: Optional[str] = None
+    logo: str | None = None
+    description: str | None = None
 
 
 def list_brands() -> list[Brand]:

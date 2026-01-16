@@ -1,19 +1,25 @@
 from __future__ import annotations
 
-from typing import Optional
-
-from app.extensions import db
 from app.models.brand import Brand
+from app.services import brand_service
+from app.services.errors import NotFoundError
+
 
 def get_all_brands() -> list[Brand]:
-    return list(Brand.query.all())
+    return brand_service.list_brands()
 
-def get_brand_by_id(brand_id: int) -> Optional[Brand]:
-    # Prefer SQLAlchemy 2.x style access through the session.
-    return db.session.get(Brand, brand_id)
+def get_brand_by_id(brand_id: int) -> Brand | None:
+    try:
+        return brand_service.get_brand(brand_id)
+    except NotFoundError:
+        return None
 
 def create_brand(data: dict) -> Brand:
-    brand = Brand(**data)
-    db.session.add(brand)
-    db.session.commit()
-    return brand
+    return brand_service.create_brand(
+        brand_service.BrandCreate(
+            logo=data.get('logo'),
+            name=data['name'],
+            description=data.get('description'),
+            internal_id=data['internal_id'],
+        )
+    )
