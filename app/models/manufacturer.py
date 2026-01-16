@@ -1,5 +1,5 @@
 from typing import Any
-from app import db
+from app.extensions import db
 from .brand import brands_manufacturers
 
 class Manufacturer(db.Model):
@@ -22,3 +22,6 @@ class Manufacturer(db.Model):
             'internal_id': self.internal_id,
             'brands': [{'id': b.id, 'name': b.name} for b in self.brands]
         }
+
+    def __repr__(self) -> str:
+        return f"<Manufacturer id={self.id} internal_id={self.internal_id!r} name={self.name!r}>"

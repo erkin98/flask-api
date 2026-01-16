@@ -1,9 +1,20 @@
 from typing import Any
-from app import db
+from app.extensions import db
 
 brands_manufacturers = db.Table('brands_manufacturers',
-    db.Column('brand_internal_id', db.Integer, db.ForeignKey('brand.internal_id'), primary_key=True),
-    db.Column('manufacturer_internal_id', db.Integer, db.ForeignKey('manufacturer.internal_id'), primary_key=True)
+    # `internal_id` is a String on both tables; the join table must match.
+    db.Column(
+        'brand_internal_id',
+        db.String(50),
+        db.ForeignKey('brand.internal_id'),
+        primary_key=True,
+    ),
+    db.Column(
+        'manufacturer_internal_id',
+        db.String(50),
+        db.ForeignKey('manufacturer.internal_id'),
+        primary_key=True,
+    ),
 )
 
 class Brand(db.Model):
@@ -24,3 +35,6 @@ class Brand(db.Model):
             'internal_id': self.internal_id,
             'manufacturers': [{'id': m.id, 'name': m.name} for m in self.manufacturers]
         }
+
+    def __repr__(self) -> str:
+        return f"<Brand id={self.id} internal_id={self.internal_id!r} name={self.name!r}>"
