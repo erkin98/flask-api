@@ -12,6 +12,9 @@ dependencies = [
     "hatchling"
 ]
 
+[project.optional-dependencies]
+dev = ["ruff"]
+
 [tool.hatch.envs.default.scripts]
 run = "flask --app run:app run --debug"
 init_db = "flask --app run:app db init"
@@ -19,13 +22,20 @@ migrate = "flask --app run:app db migrate"
 upgrade = "flask --app run:app db upgrade"
 shell = "flask --app run:app shell"
 
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
 [tool.hatch.build.targets.sdist]
 include = [
     "/app",
-    "/config.py",
+    "/config",
     "/run.py",
 ]
 [build-system]

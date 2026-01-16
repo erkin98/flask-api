@@ -1,15 +1,25 @@
-from typing import Any, List
-from app import db
+from __future__ import annotations
+
 from app.models.brand import Brand
+from app.services import brand_service
+from app.services.errors import NotFoundError
 
-def get_all_brands() -> List:
-    return Brand.query.all()
 
-def get_brand_by_id(id) -> Any | None:
-    return Brand.query.get(id)
+def get_all_brands() -> list[Brand]:
+    return brand_service.list_brands()
 
-def create_brand(data) -> Brand:
-    brand = Brand(**data)
-    db.session.add(brand)
-    db.session.commit()
-    return brand
+def get_brand_by_id(brand_id: int) -> Brand | None:
+    try:
+        return brand_service.get_brand(brand_id)
+    except NotFoundError:
+        return None
+
+def create_brand(data: dict) -> Brand:
+    return brand_service.create_brand(
+        brand_service.BrandCreate(
+            logo=data.get('logo'),
+            name=data['name'],
+            description=data.get('description'),
+            internal_id=data['internal_id'],
+        )
+    )

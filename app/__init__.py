@@ -1,10 +1,9 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+
 from config import Config
 
-db = SQLAlchemy()
-migrate = Migrate()
+from .extensions import db, migrate
+
 
 def create_flask_app(config_class=Config) -> Flask:
     app = Flask(__name__)
@@ -13,10 +12,13 @@ def create_flask_app(config_class=Config) -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.routes import api, admin_client
+    # Import models for Flask-Migrate's autogeneration.
+    # This must happen after db.init_app(app).
+    from app import models  # noqa: F401
+    from app.routes import admin_client, api
     app.register_blueprint(api.bp)
     app.register_blueprint(admin_client.bp)
 
     return app
 
-from app import models
+create_app = create_flask_app
